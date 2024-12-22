@@ -16,12 +16,17 @@
 #include "GraphBellmanFordAlg.h"
 
 #include <assert.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #include "Graph.h"
 #include "IntegersStack.h"
 #include "instrumentation.h"
+
+
+#define inf INT_MAX;
 
 struct _GraphBellmanFordAlg {
   unsigned int* marked;  // To mark vertices when reached for the first time
@@ -32,6 +37,68 @@ struct _GraphBellmanFordAlg {
   Graph* graph;
   unsigned int startVertex;  // The root of the shortest-paths tree
 };
+
+static void _check(int condition, char mssg[] ){
+
+    if (!condition){
+        printf("[ERROR] %s\n",mssg);
+        exit(1);
+    }
+
+}
+static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsigned int numVertices){
+    // finds the shortest paths to all vertices starting from "start"
+
+    // mark start vertex
+    g->distance[start] = 0;
+    g->predecessor[start] = -1;
+    g->marked[start] = 1;
+
+    // check for the others vertices using bellman ford alg
+    // flag to mark if the iteration did change something
+    int changed = 1;
+
+    // maximum amount ou iterations is |V| - 1
+    int iter = numVertices - 1;
+
+    while(iter > 0 && changed){
+
+        // reset flag
+        changed = 0;
+
+        // iterate over each vertex that has a known path
+        for (unsigned int vertex_i = 0; vertex_i < numVertices; ++vertex_i){
+
+            if ( g->distance[vertex_i] == INT_MAX ) continue;
+
+            // get the list of ajacent vertices
+            unsigned int* next = GraphGetAdjacentsTo(g->graph,vertex_i);
+            unsigned int numAdjacents = next[0]; // check graph.c for more info
+
+            for ( unsigned int j = 1 ; j < numAdjacents+1; ++j){
+
+                unsigned int adjacentVertex = next[j];
+
+                int newDist = g->distance[vertex_i] + 1;
+
+                if (newDist < g->distance[adjacentVertex]){
+                    g->distance[adjacentVertex] = newDist;
+                    g->marked[adjacentVertex] = 1;
+                    g->predecessor[adjacentVertex] = vertex_i;
+                    changed = 1;
+
+                }
+
+            }
+
+            free(next);
+
+        }
+
+        // decrement iter
+        iter--;
+    }
+}
 
 GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
                                                 unsigned int startVertex) {
@@ -54,19 +121,28 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
   //
   // CREATE AND INITIALIZE
   // result->marked
+  result->marked = (unsigned int*) malloc(numVertices*sizeof(unsigned int*));
+  _check(result->marked != NULL,"GraphBellmanFordAlgExecute--marked");
   // result->distance
+  result->distance = (int*) malloc(numVertices*sizeof(int*));
+  _check(result->distance!=NULL, "GraphBellmanFordAlgExecute--distance");
   // result->predecessor
-  //
+  result->predecessor = (int*) malloc(numVertices*sizeof(int*));
+  _check(result->predecessor!=NULL, "GraphBellmanFordAlgExecute--predessor");
 
-  // Mark all vertices as not yet visited, i.e., ZERO
-  
-  // No vertex has (yet) a (valid) predecessor
-  
-  // No vertex has (yet) a (valid) distance to the start vertex
-  
+  for ( unsigned int i = 0; i < numVertices; ++i){
+    // Mark all vertices as not yet visited, i.e., ZERO
+    result->marked[i] = -1;
+    // No vertex has (yet) a (valid) predecessor
+    result->predecessor[i] = -1;
+    // No vertex has (yet) a (valid) distance to the start vertex
+    result->distance[i] = inf;
+  }
+
   // THE ALGORTIHM TO BUILD THE SHORTEST-PATHS TREE
+  _helperBellmanFord(result,startVertex,numVertices);
 
-  return NULL;
+  return result;
 }
 
 void GraphBellmanFordAlgDestroy(GraphBellmanFordAlg** p) {
