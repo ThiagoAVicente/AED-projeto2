@@ -12,6 +12,7 @@
 // Student Number :
 
 // [TODO] MAKE THIS SHIT MORE EFFICIENT
+// DONE
 /*** COMPLETE THE GraphComputeTransitiveClosure FUNCTION ***/
 
 #include "GraphTransitiveClosure.h"
@@ -37,8 +38,6 @@ Graph* GraphComputeTransitiveClosure(Graph* g) {
     unsigned int numVertices = GraphGetNumVertices(g);
     assert(numVertices > 0);
 
-    // get bellman ford struct
-    // [TODO] want to use bf just one time
 
     // create response graph
     Graph* response = GraphCreate(numVertices, 1, 0);
@@ -57,6 +56,8 @@ Graph* GraphComputeTransitiveClosure(Graph* g) {
                 GraphAddEdge(response, vertex1, vertex2);
             }
         }
+
+        // free space
         GraphBellmanFordAlgDestroy(&bf);
     }
 
