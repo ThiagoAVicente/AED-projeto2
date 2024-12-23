@@ -11,12 +11,12 @@
 // Student Name :
 // Student Number :
 
+// -----DONE-----
 /*** COMPLETE THE GraphBellmanFordAlgExecute FUNCTION ***/
 
 #include "GraphBellmanFordAlg.h"
 
 #include <assert.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -25,8 +25,6 @@
 #include "IntegersStack.h"
 #include "instrumentation.h"
 
-
-#define inf INT_MAX;
 
 struct _GraphBellmanFordAlg {
   unsigned int* marked;  // To mark vertices when reached for the first time
@@ -79,22 +77,24 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
 
                 unsigned int adjacentVertex = next[j];
 
+                // calculate new distance
                 int newDist = g->distance[vertex_i] + 1;
 
+                // check for minimum value of the distance
                 if (newDist < g->distance[adjacentVertex]){
+
+                    // update variables
                     g->distance[adjacentVertex] = newDist;
                     g->marked[adjacentVertex] = 1;
                     g->predecessor[adjacentVertex] = vertex_i;
+
+                    // set flag to true
                     changed = 1;
-
                 }
-
             }
 
             free(next);
-
         }
-
         // decrement iter
         iter--;
     }
@@ -116,27 +116,26 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
 
   unsigned int numVertices = GraphGetNumVertices(g);
 
-  //
-  // TO BE COMPLETED !!
-  //
   // CREATE AND INITIALIZE
   // result->marked
   result->marked = (unsigned int*) malloc(numVertices*sizeof(unsigned int*));
   _check(result->marked != NULL,"GraphBellmanFordAlgExecute--marked");
+
   // result->distance
   result->distance = (int*) malloc(numVertices*sizeof(int*));
   _check(result->distance!=NULL, "GraphBellmanFordAlgExecute--distance");
+
   // result->predecessor
   result->predecessor = (int*) malloc(numVertices*sizeof(int*));
   _check(result->predecessor!=NULL, "GraphBellmanFordAlgExecute--predessor");
 
   for ( unsigned int i = 0; i < numVertices; ++i){
     // Mark all vertices as not yet visited, i.e., ZERO
-    result->marked[i] = -1;
+    result->marked[i] = 0;
     // No vertex has (yet) a (valid) predecessor
     result->predecessor[i] = -1;
     // No vertex has (yet) a (valid) distance to the start vertex
-    result->distance[i] = inf;
+    result->distance[i] = INT_MAX;
   }
 
   // THE ALGORTIHM TO BUILD THE SHORTEST-PATHS TREE

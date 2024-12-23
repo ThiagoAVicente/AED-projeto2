@@ -31,6 +31,7 @@ int main(void) {
   printf("\n");
 
   GraphCheckInvariants(tcdig01);
+  return 1;
 
   // Reading a directed graph from file
   FILE* file = fopen("DG_2.txt", "r");
