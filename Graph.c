@@ -139,7 +139,66 @@ Graph* GraphCreateTranspose(const Graph* g) {
 
   // COMPLETE THE CODE
 
-  return NULL;
+  Graph* gt = GraphCreate(g->numVertices, 1, 0);
+  List* vertices = g->verticesList;
+
+  if (g->isWeighted) {
+    ListMoveToHead(vertices);
+    for (unsigned int i = 0; i < g->numVertices; ListMoveToNext(vertices), i++) {
+      struct _Vertex* v = ListGetCurrentItem(vertices);
+
+      List* edges = v->edgesList;
+
+      if (ListIsEmpty(edges) == 0) {
+        ListMoveToHead(edges);
+        for (unsigned int j = 0; j < ListGetSize(edges); ListMoveToNext(edges), j++) {
+          struct _Edge* e = ListGetCurrentItem(edges);
+          GraphAddWeightedEdge(gt, e->adjVertex, i, e->weight);
+        }
+      }
+    }
+  } else {
+    ListMoveToHead(vertices);
+    for (unsigned int i = 0; i < g->numVertices; ListMoveToNext(vertices), i++) {
+      struct _Vertex* v = ListGetCurrentItem(vertices);
+
+      List* edges = v->edgesList;
+
+      if (ListIsEmpty(edges) == 0) {
+        ListMoveToHead(edges);
+        for (unsigned int j = 0; j < ListGetSize(edges); ListMoveToNext(edges), j++) {
+          struct _Edge* e = ListGetCurrentItem(edges);
+          GraphAddEdge(gt, e->adjVertex, i);
+        }
+      }
+    }
+  }
+
+//  ListMoveToHead(vertices);
+//  for (unsigned int i = 0; i < g->numVertices; ListMoveToNext(vertices), i++) {
+//    struct _Vertex* v = ListGetCurrentItem(vertices);
+//    struct _Vertex* vt = ListGetCurrentItem(vertices);
+//
+//    vt->inDegree=v->outDegree;
+//    vt->outDegree=v->inDegree;
+//  
+//    List* edges = v->edgesList;
+//    List* edgesT = vt->edgesList;
+//    if (ListIsEmpty(edges) == 0) {
+//      ListMoveToHead(edges);
+//      printf("Ski : %d\n", ListGetSize(edges));
+//      for (unsigned int j = 0; j < ListGetSize(edges); ListMoveToNext(edges), j++) {
+//        struct _Edge* e = ListGetCurrentItem(edges);
+//        struct _Edge* et = (struct _Edge*)malloc(sizeof(struct _Edge));
+//        if (et == NULL) abort();
+//        et->adjVertex = e->adjVertex;
+//        et->weight = e->weight;
+//        ListInsert(edgesT, et);
+//        printf("Skibid : %d\n", et->adjVertex);
+//      }
+//    }
+//  }
+  return gt;
 }
 
 void GraphDestroy(Graph** p) {
