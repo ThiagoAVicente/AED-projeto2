@@ -88,11 +88,11 @@ GraphAllPairsShortestDistances* GraphAllPairsShortestDistancesExecute(
       GraphBellmanFordAlg* bf = GraphBellmanFordAlgExecute(g, vertex);
 
       // no need for all iteractions
-      for ( unsigned int vertex2 = vertex+1; vertex2 < numVertices; ++vertex2){
+      for ( unsigned int vertex2 = 0; vertex2 < numVertices; ++vertex2){
 
           // check if vertex was reached
           if ( GraphBellmanFordAlgReached(bf, vertex2)){
-              response->distance[vertex][vertex2] = response->distance[vertex2][vertex] = GraphBellmanFordAlgDistance(bf, vertex2);
+              response->distance[vertex][vertex2] = GraphBellmanFordAlgDistance(bf, vertex2);
           }
       }
 
