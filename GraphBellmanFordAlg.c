@@ -50,7 +50,6 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
     // mark start vertex
     g->distance[start] = 0;
     g->predecessor[start] = -1;
-    g->marked[start] = 1;
 
     // check for the others vertices using bellman ford alg
     // flag to mark if the iteration did change something
@@ -67,7 +66,9 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
         // iterate over each vertex that has a known path
         for (unsigned int vertex_i = 0; vertex_i < numVertices; ++vertex_i){
 
-            if ( g->distance[vertex_i] == INT_MAX ) continue;
+            if ( g->distance[vertex_i] == INT_MAX || g->marked[vertex_i]) continue;
+
+            g->marked[vertex_i] = 1;
 
             // get the list of adjacent vertices
             unsigned int* next = GraphGetAdjacentsTo(g->graph,vertex_i);
@@ -77,19 +78,18 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
 
                 unsigned int adjacentVertex = next[j];
 
-                // calculate new distance
-                int newDist = g->distance[vertex_i] + 1;
-
                 // check for minimum value of the distance
-                if (newDist < g->distance[adjacentVertex]){
+                if (g->distance[adjacentVertex] == INT_MAX){
 
-                    // update variables
-                    g->distance[adjacentVertex] = newDist;
-                    g->marked[adjacentVertex] = 1;
-                    g->predecessor[adjacentVertex] = vertex_i;
+                  // calculate distance
+                  int dist = g->distance[vertex_i] + 1;
 
-                    // set flag to true
-                    changed = 1;
+                  // update variables
+                  g->distance[adjacentVertex] = dist;
+                  g->predecessor[adjacentVertex] = vertex_i;
+
+                  // set flag to true
+                  changed = 1;
                 }
             }
 
