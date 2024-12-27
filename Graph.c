@@ -6,10 +6,10 @@
 // Graph - Using a list of adjacency lists representation
 //
 
-// Student Name :
-// Student Number :
-// Student Name :
-// Student Number :
+// Student Name : José Bagagem
+// Student Number : 120141
+// Student Name : Thiago Vicente
+// Student Number : 121497
 
 /*** COMPLETE THE GraphCreateTranspose FUNCTION ***/
 

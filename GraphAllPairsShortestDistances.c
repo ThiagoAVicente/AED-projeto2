@@ -41,21 +41,21 @@ static void _check( const int condition,const char* mssg){
     }
 }
 
-static void _fill(int * vec, uint n, uint val ){
+static void _fill(int * vec, unsigned int n, unsigned int val ){
     // fills vec with val
-    for ( uint i = 0; i < n;++i){
+    for ( unsigned int i = 0; i < n;++i){
         vec[i] = val;
     }
 }
 
-static int** _allocate2DMatrix(uint n){
+static int** _allocate2DMatrix(unsigned int n){
     // allocates memory for a 2d, nxn, matrix
 
     int ** response = (int**)malloc(n*sizeof(int*));
     _check(response != NULL, "malloc in allocate2DMatrix");
 
     // alocate space for each line
-    for ( uint i = 0; i < n; ++i){
+    for ( unsigned int i = 0; i < n; ++i){
         response[i] = (int*)malloc(n*sizeof(int));
         _check(response[i]!=NULL, "malloc in allocate2DMatrix (lines)");
         _fill(response[i],n,INDEFINITE);
@@ -71,8 +71,8 @@ GraphAllPairsShortestDistances* GraphAllPairsShortestDistancesExecute(
   assert(g != NULL);
 
   // get info about g
-  uint numEdjes = GraphGetNumEdges(g);
-  uint numVertices = GraphGetNumVertices(g);
+  unsigned int numEdjes = GraphGetNumEdges(g);
+  unsigned int numVertices = GraphGetNumVertices(g);
 
   // allocate response space
   GraphAllPairsShortestDistances* response = (GraphAllPairsShortestDistances*)malloc(sizeof(GraphAllPairsShortestDistances));
@@ -83,12 +83,12 @@ GraphAllPairsShortestDistances* GraphAllPairsShortestDistancesExecute(
   if ( numEdjes == 0 || numVertices == 0) return response;
 
   // iterate over each vertice
-  for( uint vertex = 0; vertex < numVertices; ++vertex){
+  for( unsigned int vertex = 0; vertex < numVertices; ++vertex){
       // calculate bf
       GraphBellmanFordAlg* bf = GraphBellmanFordAlgExecute(g, vertex);
 
       // no need for all iteractions
-      for ( uint vertex2 = vertex+1; vertex2 < numVertices; ++vertex2){
+      for ( unsigned int vertex2 = vertex+1; vertex2 < numVertices; ++vertex2){
 
           // check if vertex was reached
           if ( GraphBellmanFordAlgReached(bf, vertex2)){

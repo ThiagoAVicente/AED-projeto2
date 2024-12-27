@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "grapheccentricitymeasures.h": "c",
+        "graphallpairsshortestdistances.h": "c",
+        "graph.h": "c",
+        "stdlib.h": "c",
+        "assert.h": "c",
+        "stdio.h": "c"
+    }
+}
