@@ -6,13 +6,11 @@
 // GraphTransitiveClosure - Transitive Closure of a directed graph
 //
 
-// Student Name :
-// Student Number :
-// Student Name :
-// Student Number :
+// Student Name : José Bagagem
+// Student Number : 120141
+// Student Name : Thiago Vicente
+// Student Number : 121497
 
-// [TODO] MAKE THIS SHIT MORE EFFICIENT
-// DONE
 /*** COMPLETE THE GraphComputeTransitiveClosure FUNCTION ***/
 
 #include "GraphTransitiveClosure.h"
@@ -51,7 +49,7 @@ Graph* GraphComputeTransitiveClosure(Graph* g) {
         // iterate over each vertex starting on vertex1+1 for better efficiency
         for ( unsigned int vertex2 = vertex1+1; vertex2 < numVertices; ++vertex2){
 
-            // if there is a connection create an edje between the vertices
+            // if there is a connection create an edge between the vertices
             if ( GraphBellmanFordAlgReached(bf, vertex1)){
                 GraphAddEdge(response, vertex1, vertex2);
             }
