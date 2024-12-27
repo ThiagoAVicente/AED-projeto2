@@ -139,16 +139,27 @@ Graph* GraphCreateTranspose(const Graph* g) {
 
   // COMPLETE THE CODE
 
+  //Create a new graph that represents the transpose
   Graph* gt = GraphCreate(g->numVertices, 1, 0);
+
+  //If the graph has no vertices it returns gt
+  if (g->numVertices==0) return gt;
+
   List* vertices = g->verticesList;
 
+  //Start in the for loop in the head
+  ListMoveToHead(vertices);
+
+  //If the graph is weighted, it adds the edges with their weights, otherwise, it adds the edges without weights
   if (g->isWeighted) {
-    ListMoveToHead(vertices);
+    //Iterates for each vertex of the original graph and gets their edgesList
     for (unsigned int i = 0; i < g->numVertices; ListMoveToNext(vertices), i++) {
       struct _Vertex* v = ListGetCurrentItem(vertices);
 
       List* edges = v->edgesList;
 
+      //If the list is not empty, it iterates through each edge of the vertex and adds the edge
+      //with the reversed direction to the transpose graph
       if (ListIsEmpty(edges) == 0) {
         ListMoveToHead(edges);
         for (unsigned int j = 0; j < ListGetSize(edges); ListMoveToNext(edges), j++) {
@@ -158,7 +169,7 @@ Graph* GraphCreateTranspose(const Graph* g) {
       }
     }
   } else {
-    ListMoveToHead(vertices);
+
     for (unsigned int i = 0; i < g->numVertices; ListMoveToNext(vertices), i++) {
       struct _Vertex* v = ListGetCurrentItem(vertices);
 
