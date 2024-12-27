@@ -78,14 +78,15 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
 
                 unsigned int adjacentVertex = next[j];
 
-                // check for minimum value of the distance
-                if (g->distance[adjacentVertex] == INT_MAX){
+                // calculate distance
+                int newDist = g->distance[vertex_i] + 1;
 
-                  // calculate distance
-                  int dist = g->distance[vertex_i] + 1;
+                // check for minimum value of the distance
+                if (newDist < g->distance[adjacentVertex]){
+
 
                   // update variables
-                  g->distance[adjacentVertex] = dist;
+                  g->distance[adjacentVertex] = newDist;
                   g->predecessor[adjacentVertex] = vertex_i;
 
                   // set flag to true
