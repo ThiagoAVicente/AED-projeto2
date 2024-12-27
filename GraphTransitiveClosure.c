@@ -47,10 +47,12 @@ Graph* GraphComputeTransitiveClosure(Graph* g) {
         GraphBellmanFordAlg* bf = GraphBellmanFordAlgExecute(g, vertex1);
 
         // iterate over each vertex starting on vertex1+1 for better efficiency
-        for ( unsigned int vertex2 = vertex1+1; vertex2 < numVertices; ++vertex2){
-
+        for ( unsigned int vertex2 = 0; vertex2 < numVertices; ++vertex2){
+            
+            //skips if the vertex is the same
+            if (vertex1==vertex2) continue;
             // if there is a connection create an edge between the vertices
-            if ( GraphBellmanFordAlgReached(bf, vertex1)){
+            if ( GraphBellmanFordAlgReached(bf, vertex2)){
                 GraphAddEdge(response, vertex1, vertex2);
             }
         }
