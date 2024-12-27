@@ -173,31 +173,7 @@ Graph* GraphCreateTranspose(const Graph* g) {
       }
     }
   }
-
-//  ListMoveToHead(vertices);
-//  for (unsigned int i = 0; i < g->numVertices; ListMoveToNext(vertices), i++) {
-//    struct _Vertex* v = ListGetCurrentItem(vertices);
-//    struct _Vertex* vt = ListGetCurrentItem(vertices);
-//
-//    vt->inDegree=v->outDegree;
-//    vt->outDegree=v->inDegree;
-//  
-//    List* edges = v->edgesList;
-//    List* edgesT = vt->edgesList;
-//    if (ListIsEmpty(edges) == 0) {
-//      ListMoveToHead(edges);
-//      printf("Ski : %d\n", ListGetSize(edges));
-//      for (unsigned int j = 0; j < ListGetSize(edges); ListMoveToNext(edges), j++) {
-//        struct _Edge* e = ListGetCurrentItem(edges);
-//        struct _Edge* et = (struct _Edge*)malloc(sizeof(struct _Edge));
-//        if (et == NULL) abort();
-//        et->adjVertex = e->adjVertex;
-//        et->weight = e->weight;
-//        ListInsert(edgesT, et);
-//        printf("Skibid : %d\n", et->adjVertex);
-//      }
-//    }
-//  }
+  
   return gt;
 }
 

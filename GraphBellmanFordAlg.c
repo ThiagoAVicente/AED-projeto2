@@ -69,7 +69,7 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
 
             if ( g->distance[vertex_i] == INT_MAX ) continue;
 
-            // get the list of ajacent vertices
+            // get the list of adjacent vertices
             unsigned int* next = GraphGetAdjacentsTo(g->graph,vertex_i);
             unsigned int numAdjacents = next[0]; // check graph.c for more info
 
@@ -138,7 +138,7 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
     result->distance[i] = INT_MAX;
   }
 
-  // THE ALGORTIHM TO BUILD THE SHORTEST-PATHS TREE
+  // THE ALGORITHM TO BUILD THE SHORTEST-PATHS TREE
   _helperBellmanFord(result,startVertex,numVertices);
 
   return result;
