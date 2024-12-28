@@ -26,11 +26,10 @@
 #include "instrumentation.h"
 
 // COUNTERS
-#define MARK_ACCESS InstrCount[0]
-#define MARK_ATRIBUTION InstrCount[1]
-#define PREDECESSOR_ATRIBUTION InstrCount[2]
-#define DISTANCE_ACCESS InstrCount[3]
-#define DISTANCE_ATRIBUTION InstrCount[4]
+#define MARK_ATRIBUTION InstrCount[0]
+#define PREDECESSOR_ATRIBUTION InstrCount[1]
+#define DISTANCE_ACCESS InstrCount[2]
+#define DISTANCE_ATRIBUTION InstrCount[3]
 
 struct _GraphBellmanFordAlg {
   unsigned int* marked;  // To mark vertices when reached for the first time
@@ -58,6 +57,9 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
     DISTANCE_ATRIBUTION++;
     g->predecessor[start] = -1;
     PREDECESSOR_ATRIBUTION++;
+    g->marked[start] = 1;
+    MARK_ATRIBUTION++;
+
 
     // check for the others vertices using bellman ford alg
     // flag to mark if the iteration did change something
@@ -66,7 +68,7 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
     // maximum amount ou iterations is |V| - 1
     int iter = 0;
 
-    while(iter <= numVertices && changed){
+    while(iter < numVertices - 1 && changed){
 
       // reset flag
       changed = 0;
@@ -74,16 +76,9 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
       // iterate over each vertex
       for (unsigned int vertex_i = 0; vertex_i < numVertices; ++vertex_i){
 
-        //Skip the unreachable vertices, for now
-        DISTANCE_ACCESS++;
-        if ( g->distance[vertex_i] == INT_MAX) continue;
-        //Skip the vertices that where updated in this iteration of the while loop
+        //Skip the vertices that need to be updated in this iteration of the while loop
         DISTANCE_ACCESS++;
         if (g->distance[vertex_i]!=iter) continue;
-
-        //Marks the vertex so the algorithm doesn't iterate through it again
-        g->marked[vertex_i] = 1;
-        MARK_ATRIBUTION++;
 
         //Get the list of adjacent vertices
         unsigned int* next = GraphGetAdjacentsTo(g->graph,vertex_i);
@@ -100,6 +95,9 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
           DISTANCE_ATRIBUTION++;
           g->predecessor[adjacentVertex] = vertex_i;
           PREDECESSOR_ATRIBUTION++;
+          //Marks the vertex so the algorithm doesn't iterate through it again
+          g->marked[adjacentVertex] = 1;
+          MARK_ATRIBUTION++;
 
           // set flag to true
           changed = 1;
@@ -145,7 +143,7 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
   for ( unsigned int i = 0; i < numVertices; ++i){
     // Mark all vertices as not yet visited, i.e., ZERO
     result->marked[i] = 0;
-    MARK_ATRIBUTION;
+    MARK_ATRIBUTION++;
     // No vertex has (yet) a (valid) predecessor
     result->predecessor[i] = -1;
     PREDECESSOR_ATRIBUTION++;
