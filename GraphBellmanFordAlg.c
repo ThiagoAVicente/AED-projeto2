@@ -63,11 +63,12 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
         // reset flag
         changed = 0;
 
-        // iterate over each vertex that has a known path
+        // iterate over each vertex that has a known path and isn't already marked
         for (unsigned int vertex_i = 0; vertex_i < numVertices; ++vertex_i){
 
             if ( g->distance[vertex_i] == INT_MAX || g->marked[vertex_i]) continue;
-
+            
+            //Maks the vertex so the algorithm doesn't iterate through it again
             g->marked[vertex_i] = 1;
 
             // get the list of adjacent vertices
