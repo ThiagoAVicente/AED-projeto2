@@ -64,7 +64,7 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
     int changed = 1;
 
     // maximum amount ou iterations is |V| - 1
-    int iter = 1;
+    int iter = 0;
 
     while(iter <= numVertices && changed){
 
@@ -77,12 +77,9 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
         //Skip the unreachable vertices, for now
         DISTANCE_ACCESS++;
         if ( g->distance[vertex_i] == INT_MAX) continue;
-        //Skip the vertices that are already marked
-        MARK_ACCESS++;
-        if (g->marked[vertex_i]) continue;
         //Skip the vertices that where updated in this iteration of the while loop
         DISTANCE_ACCESS++;
-        if (g->distance[vertex_i]==iter) continue;
+        if (g->distance[vertex_i]!=iter) continue;
 
         //Marks the vertex so the algorithm doesn't iterate through it again
         g->marked[vertex_i] = 1;
@@ -99,7 +96,7 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
           if (g->distance[adjacentVertex]!=INT_MAX) continue;
           // update variables
           //The distance is the iteration of this loop
-          g->distance[adjacentVertex] = iter;
+          g->distance[adjacentVertex] = iter+1;
           DISTANCE_ATRIBUTION++;
           g->predecessor[adjacentVertex] = vertex_i;
           PREDECESSOR_ATRIBUTION++;
