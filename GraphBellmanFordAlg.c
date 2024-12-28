@@ -64,56 +64,50 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
     int changed = 1;
 
     // maximum amount ou iterations is |V| - 1
-    int iter = numVertices - 1;
+    int iter = 1;
 
-    while(iter > 0 && changed){
+    while(iter <= numVertices && changed){
 
-        // reset flag
-        changed = 0;
+      // reset flag
+      changed = 0;
 
-        // iterate over each vertex that has a known path and isn't already marked
-        for (unsigned int vertex_i = 0; vertex_i < numVertices; ++vertex_i){
+      // iterate over each vertex that has a known path and isn't already marked
+      for (unsigned int vertex_i = 0; vertex_i < numVertices; ++vertex_i){
 
-            MARK_ACCESS++;
-            DISTANCE_ACCESS++;
-            if ( g->distance[vertex_i] == INT_MAX || g->marked[vertex_i]) continue;
+        DISTANCE_ACCESS++;
+        if ( g->distance[vertex_i] == INT_MAX) continue;
+        MARK_ACCESS++;
+        if (g->marked[vertex_i]) continue;
+        DISTANCE_ACCESS++;
+        if (g->distance[vertex_i]==iter) continue;
 
-            //Maks the vertex so the algorithm doesn't iterate through it again
-            g->marked[vertex_i] = 1;
-            MARK_ATRIBUTION++;
+        //Maks the vertex so the algorithm doesn't iterate through it again
+        g->marked[vertex_i] = 1;
+        MARK_ATRIBUTION++;
 
-            // get the list of adjacent vertices
-            unsigned int* next = GraphGetAdjacentsTo(g->graph,vertex_i);
-            unsigned int numAdjacents = next[0]; // check graph.c for more info
+        // get the list of adjacent vertices
+        unsigned int* next = GraphGetAdjacentsTo(g->graph,vertex_i);
+        unsigned int numAdjacents = next[0]; // check graph.c for more info
 
-            for ( unsigned int j = 1 ; j < numAdjacents+1; ++j){
+        for ( unsigned int j = 1 ; j < numAdjacents+1; ++j){
 
-                unsigned int adjacentVertex = next[j];
+          unsigned int adjacentVertex = next[j];
 
-                // calculate distance
-                int newDist = g->distance[vertex_i] + 1;
-                DISTANCE_ACCESS++;
+          // update variables
+          g->distance[adjacentVertex] = iter;
+          DISTANCE_ATRIBUTION++;
+          g->predecessor[adjacentVertex] = vertex_i;
+          PREDECESSOR_ATRIBUTION++;
 
-                // check for minimum value of the distance
-                DISTANCE_ACCESS++;
-                if (newDist < g->distance[adjacentVertex]){
-
-
-                  // update variables
-                  g->distance[adjacentVertex] = newDist;
-                  DISTANCE_ATRIBUTION;
-                  g->predecessor[adjacentVertex] = vertex_i;
-                  PREDECESSOR_ATRIBUTION++;
-
-                  // set flag to true
-                  changed = 1;
-                }
-            }
-
-            free(next);
+          // set flag to true
+          changed = 1;
+        
         }
-        // decrement iter
-        iter--;
+
+        free(next);
+      }
+      // decrement iter
+      iter++;
     }
 }
 
