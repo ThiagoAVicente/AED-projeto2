@@ -92,7 +92,8 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
         for ( unsigned int j = 1 ; j < numAdjacents+1; ++j){
 
           unsigned int adjacentVertex = next[j];
-
+          DISTANCE_ACCESS++;
+          if (g->distance[adjacentVertex]!=INT_MAX) continue;
           // update variables
           g->distance[adjacentVertex] = iter;
           DISTANCE_ATRIBUTION++;
