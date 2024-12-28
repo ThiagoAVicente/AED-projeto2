@@ -1,7 +1,9 @@
 *.o
-
+grafos
+out
 TestAllPairsShortestDistances
 TestBellmanFordAlg
 TestCreateTranspose
 TestEccentricityMeasures
 TestTransitiveClosure
+testescomputacionais

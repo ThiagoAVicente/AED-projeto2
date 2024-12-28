@@ -95,9 +95,9 @@ static void _testFunction(char* dirName, char* outputFile, int op, char* delimit
 
         // save a label with the info about the graph
         char label[512];
-        snprintf(label, sizeof(label), "graph-> vertices: %d  edjes: %d\nMARK_ACCESS%sMARK_ASSIGNMENT\
-            %sPREDECESSOR_ASSIGNMENT%sDISTANCE_ACCESS%sDISTANCE_ASSIGNMENT\
-            ",GraphGetNumVertices(g),GraphGetNumEdges(g),delimiter,delimiter,delimiter,delimiter);
+        snprintf(label, sizeof(label), "graph-> vertices: %d  edjes: %d directed: %d\nMARK_ACCESS%sMARK_ASSIGNMENT\
+%sPREDECESSOR_ASSIGNMENT%sDISTANCE_ACCESS%sDISTANCE_ASSIGNMENT\n\
+",GraphGetNumVertices(g),GraphGetNumEdges(g),GraphIsDigraph(g),delimiter,delimiter,delimiter,delimiter);
         _saveResults(outputFile, label);
 
         char result[128];
