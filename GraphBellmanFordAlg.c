@@ -71,21 +71,24 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
       // reset flag
       changed = 0;
 
-      // iterate over each vertex that has a known path and isn't already marked
+      // iterate over each vertex
       for (unsigned int vertex_i = 0; vertex_i < numVertices; ++vertex_i){
 
+        //Skip the unreachable vertices, for now
         DISTANCE_ACCESS++;
         if ( g->distance[vertex_i] == INT_MAX) continue;
+        //Skip the vertices that are already marked
         MARK_ACCESS++;
         if (g->marked[vertex_i]) continue;
+        //Skip the vertices that where updated in this iteration of the while loop
         DISTANCE_ACCESS++;
         if (g->distance[vertex_i]==iter) continue;
 
-        //Maks the vertex so the algorithm doesn't iterate through it again
+        //Marks the vertex so the algorithm doesn't iterate through it again
         g->marked[vertex_i] = 1;
         MARK_ATRIBUTION++;
 
-        // get the list of adjacent vertices
+        //Get the list of adjacent vertices
         unsigned int* next = GraphGetAdjacentsTo(g->graph,vertex_i);
         unsigned int numAdjacents = next[0]; // check graph.c for more info
 
@@ -95,6 +98,7 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
           DISTANCE_ACCESS++;
           if (g->distance[adjacentVertex]!=INT_MAX) continue;
           // update variables
+          //The distance is the iteration of this loop
           g->distance[adjacentVertex] = iter;
           DISTANCE_ATRIBUTION++;
           g->predecessor[adjacentVertex] = vertex_i;
