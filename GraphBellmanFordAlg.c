@@ -101,7 +101,7 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
 
           // set flag to true
           changed = 1;
-        
+
         }
 
         free(next);
@@ -150,6 +150,14 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
     // No vertex has (yet) a (valid) distance to the start vertex
     result->distance[i] = INT_MAX;
     DISTANCE_ATRIBUTION++;
+  }
+
+  // check if there are any edjes
+  if (GraphGetNumEdges(g) == 0){
+    result->marked[startVertex] = 1;
+    result->distance[startVertex] = 0;
+
+    return result;
   }
 
   // THE ALGORITHM TO BUILD THE SHORTEST-PATHS TREE

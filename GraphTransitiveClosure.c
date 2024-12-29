@@ -37,7 +37,6 @@ Graph* GraphComputeTransitiveClosure(Graph* g) {
 
     // get the num of vertices in the graph
     unsigned int numVertices = GraphGetNumVertices(g);
-    assert(numVertices > 0);
 
     // create response graph
     Graph* response = GraphCreate(numVertices, 1, 0);
