@@ -90,7 +90,7 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
           DISTANCE_ACCESS++;
           if (g->distance[adjacentVertex]!=INT_MAX) continue;
           // update variables
-          //The distance is the iteration of this loop
+          //The distance is the iteration of this while loop
           g->distance[adjacentVertex] = iter+1;
           DISTANCE_ATRIBUTION++;
           g->predecessor[adjacentVertex] = vertex_i;
@@ -106,7 +106,7 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
 
         free(next);
       }
-      // decrement iter
+      // increment iter
       iter++;
     }
 }
