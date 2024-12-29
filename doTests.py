@@ -68,7 +68,7 @@ def call_func(op,name):
 
         # Executar o programa com os argumentos fornecidos
         result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        #print(result)
+        print(result)
 
     except FileNotFoundError:
         print("The program 'testescomputacionais' was not found. Make sure it is compiled and in the same directory.")
