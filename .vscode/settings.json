@@ -5,6 +5,8 @@
         "graph.h": "c",
         "stdlib.h": "c",
         "assert.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "integersstack.h": "c",
+        "instrumentation.h": "c"
     }
 }

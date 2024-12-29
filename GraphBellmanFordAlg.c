@@ -6,10 +6,10 @@
 // GraphBellmanFord - Bellman-Ford Algorithm
 //
 
-// Student Name :
-// Student Number :
-// Student Name :
-// Student Number :
+// Student Name : José Bagagem 
+// Student Number : 120141
+// Student Name : Thiago Vicente
+// Student Number : 121497
 
 // -----DONE-----
 /*** COMPLETE THE GraphBellmanFordAlgExecute FUNCTION ***/
@@ -153,12 +153,12 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
   }
 
   // check if there are any edjes
-  if (GraphGetNumEdges(g) == 0){
-    result->marked[startVertex] = 1;
-    result->distance[startVertex] = 0;
-
-    return result;
-  }
+  //if (GraphGetNumEdges(g) == 0){
+  //  result->marked[startVertex] = 1;
+  //  result->distance[startVertex] = 0;
+  //
+  //  return result;
+  //}
 
   // THE ALGORITHM TO BUILD THE SHORTEST-PATHS TREE
   _helperBellmanFord(result,startVertex,numVertices);
