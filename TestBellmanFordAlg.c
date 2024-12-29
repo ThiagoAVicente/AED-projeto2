@@ -14,16 +14,12 @@
 int main(void) {
   // What kind of graph is dig01?
   Graph* dig01 = GraphCreate(6, 1, 0);
-  GraphAddEdge(dig01, 1, 2);
-  GraphAddEdge(dig01, 1, 4);
-  GraphAddEdge(dig01, 3, 4);
-  printf("The graph:\n");
+
   // Displaying in DOT format
   GraphDisplayDOT(dig01);
   printf("\n");
 
   GraphCheckInvariants(dig01);
-
   // Bellman-Ford Algorithm
 
   // Consider each vertex as a start vertex
@@ -36,6 +32,7 @@ int main(void) {
 
     GraphBellmanFordAlgDestroy(&BF_result);
   }
+  return 0;
 
   // What kind of graph is g01?
   Graph* g01 = GraphCreate(6, 0, 0);

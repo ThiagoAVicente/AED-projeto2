@@ -11,7 +11,6 @@
 
 #include "Graph.h"
 #include "GraphTransitiveClosure.h"
-#include "IntegersStack.h"
 #include "instrumentation.h"
 
 // COUNTERS
@@ -85,6 +84,8 @@ static void _testFunction(char* dirName, char* outputFile, int op, char* delimit
         }
 
         InstrReset();
+        printf("%lu%s%lu%s%lu%s%lu%s%lu\n",
+                    MARK_ACCESS,delimiter, MARK_ASSIGNMENT,delimiter, PREDECESSOR_ASSIGNMENT,delimiter,DISTANCE_ACCESS,delimiter, DISTANCE_ASSIGNMENT);
 
         // Form the full path for the graph file
         char graphFile[256];

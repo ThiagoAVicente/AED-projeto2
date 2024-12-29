@@ -26,10 +26,11 @@
 #include "instrumentation.h"
 
 // COUNTERS
-#define MARK_ATRIBUTION InstrCount[0]
-#define PREDECESSOR_ATRIBUTION InstrCount[1]
-#define DISTANCE_ACCESS InstrCount[2]
-#define DISTANCE_ATRIBUTION InstrCount[3]
+#define MARK_ACCESS InstrCount[0]
+#define MARK_ASSIGNMENT InstrCount[1]
+#define PREDECESSOR_ASSIGNMENT InstrCount[2]
+#define DISTANCE_ACCESS InstrCount[3]
+#define DISTANCE_ASSIGNMENT InstrCount[4]
 
 struct _GraphBellmanFordAlg {
   unsigned int* marked;  // To mark vertices when reached for the first time
@@ -54,11 +55,11 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
 
     // mark start vertex
     g->distance[start] = 0;
-    DISTANCE_ATRIBUTION++;
+    DISTANCE_ASSIGNMENT++;
     g->predecessor[start] = -1;
-    PREDECESSOR_ATRIBUTION++;
+    PREDECESSOR_ASSIGNMENT++;
     g->marked[start] = 1;
-    MARK_ATRIBUTION++;
+    MARK_ASSIGNMENT++;
 
 
     // check for the others vertices using bellman ford alg
@@ -72,7 +73,6 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
 
       // reset flag
       changed = 0;
-
       // iterate over each vertex
       for (unsigned int vertex_i = 0; vertex_i < numVertices; ++vertex_i){
 
@@ -83,21 +83,19 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
         //Get the list of adjacent vertices
         unsigned int* next = GraphGetAdjacentsTo(g->graph,vertex_i);
         unsigned int numAdjacents = next[0]; // check graph.c for more info
-
         for ( unsigned int j = 1 ; j < numAdjacents+1; ++j){
-
           unsigned int adjacentVertex = next[j];
           DISTANCE_ACCESS++;
           if (g->distance[adjacentVertex]!=INT_MAX) continue;
           // update variables
           //The distance is the iteration of this while loop
           g->distance[adjacentVertex] = iter+1;
-          DISTANCE_ATRIBUTION++;
+          DISTANCE_ASSIGNMENT++;
           g->predecessor[adjacentVertex] = vertex_i;
-          PREDECESSOR_ATRIBUTION++;
+          PREDECESSOR_ASSIGNMENT++;
           //Marks the vertex so the algorithm doesn't iterate through it again
           g->marked[adjacentVertex] = 1;
-          MARK_ATRIBUTION++;
+          MARK_ASSIGNMENT++;
 
           // set flag to true
           changed = 1;
@@ -143,22 +141,14 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
   for ( unsigned int i = 0; i < numVertices; ++i){
     // Mark all vertices as not yet visited, i.e., ZERO
     result->marked[i] = 0;
-    MARK_ATRIBUTION++;
+    MARK_ASSIGNMENT++;
     // No vertex has (yet) a (valid) predecessor
     result->predecessor[i] = -1;
-    PREDECESSOR_ATRIBUTION++;
+    PREDECESSOR_ASSIGNMENT++;
     // No vertex has (yet) a (valid) distance to the start vertex
     result->distance[i] = INT_MAX;
-    DISTANCE_ATRIBUTION++;
+    DISTANCE_ASSIGNMENT++;
   }
-
-  // check if there are any edjes
-  //if (GraphGetNumEdges(g) == 0){
-  //  result->marked[startVertex] = 1;
-  //  result->distance[startVertex] = 0;
-  //
-  //  return result;
-  //}
 
   // THE ALGORITHM TO BUILD THE SHORTEST-PATHS TREE
   _helperBellmanFord(result,startVertex,numVertices);
