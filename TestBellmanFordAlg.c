@@ -32,7 +32,6 @@ int main(void) {
 
     GraphBellmanFordAlgDestroy(&BF_result);
   }
-  return 0;
 
   // What kind of graph is g01?
   Graph* g01 = GraphCreate(6, 0, 0);
