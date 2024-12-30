@@ -4,11 +4,13 @@ import sys
 import subprocess
 dir = "grafos"
 outdir = "out"
-NUMTESTS = 5
-MINVERTICES = 5
+NUMTESTS = 3
+MINVERTICES = 4
 
-def generate_random_graph(n,case, is_directed=False):
-    """Gera um grafo aleatório com n vértices e arestas direcionais ou não."""
+
+def generate_random_graph(n, case, is_directed=False):
+    """Gera um grafo aleatório com n vértices e arestas direcionais ou não,
+    garantindo que o último vértice não tenha caminho para o vértice inicial."""
     # Grafo Erdős-Rényi com probabilidade de arestas
     if case == 0:
         p = random.uniform(0, 1)  # Probabilidade de aresta variada
@@ -17,13 +19,32 @@ def generate_random_graph(n,case, is_directed=False):
     elif case == -1:
         p = 1  # Totalmente conectado
     else:
-        raise ValueError("Invalid case. Use 0 (varied), 1 (no connections), or 2 (fully connected).")
+        raise ValueError("Invalid case. Use 0 (varied), 1 (no connections), or -1 (fully connected).")
 
+    # Criar o grafo
     if is_directed:
         G = nx.erdos_renyi_graph(n, p, directed=True)
     else:
         G = nx.erdos_renyi_graph(n, p)
+
+    # bellman pior caso
+    v = 0
+    w = n-1
+    if G.has_edge(w, v):
+            G.remove_edge( w,v)
+
+    # Garantir que o último vértice (n-1) não tenha caminho para o vértice inicial (0)
+    #inds = [i for i in range(n)]
+    #if is_directed:
+    #    for i in range(0,n):
+        #        v = inds[i-1]
+        #        w = inds[i]
+        #        if G.has_edge(w, v):
+            #                G.remove_edge( w,v)
+
+
     return G
+
 
 
 def save_graph_to_txt(graph, filename):
@@ -42,7 +63,7 @@ def save_graph_to_txt(graph, filename):
             file.write(f"{u} {v}\n")  # Aumentando 1 para tornar os índices 1-based
 
         # Escrever os nós isolados (sem arestas)
-        isolated_nodes = set(range(1, num_vertices + 1)) - set([node for edge in graph.edges() for node in edge])
+        isolated_nodes = set(range(0, num_vertices)) - set([node for edge in graph.edges() for node in edge])
         for node in sorted(isolated_nodes):
             file.write(f"{node}\n")
 
@@ -68,7 +89,7 @@ def call_func(op,name):
 
         # Executar o programa com os argumentos fornecidos
         result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        print(result)
+        #print(result)
 
     except FileNotFoundError:
         print("The program 'testescomputacionais' was not found. Make sure it is compiled and in the same directory.")
@@ -87,14 +108,14 @@ def main():
 
     if op == 1:
         # bellman test
-        for case in [-1, 0, 1]:
+        for case in [-1,0,1]:
             for i in range(MINVERTICES,MINVERTICES+NUMTESTS):
-                generate_and_save_graphs(i,n,-1,case)
+                generate_and_save_graphs(i,n,1,case)
                 call_func(1,f"bellman_{["worst","average","best"][case+1]}_{i}")
 
     else:
         # transitive closure test
-        for case in [-1, 0, 1]:
+        for case in [-1]:
             for i in range(MINVERTICES,NUMTESTS+MINVERTICES):
                 generate_and_save_graphs(i,n,1,case)
                 call_func(0,f"tClosure_{["worst","average","best"][case+1]}_{i}")
