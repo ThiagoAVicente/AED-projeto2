@@ -15,6 +15,29 @@ int main(void) {
   // What kind of graph is dig01?
   Graph* dig01 = GraphCreate(6, 1, 0);
 
+  GraphAddEdge(dig01, 0, 1);
+  GraphAddEdge(dig01, 0, 2);
+  GraphAddEdge(dig01, 0, 3);
+  GraphAddEdge(dig01, 0, 4);
+
+
+  GraphAddEdge(dig01, 1, 0);
+  GraphAddEdge(dig01, 1, 2);
+  GraphAddEdge(dig01, 1, 3);
+  GraphAddEdge(dig01, 1, 4);
+  GraphAddEdge(dig01, 1, 5);
+
+  GraphAddEdge(dig01, 2, 0);
+  GraphAddEdge(dig01, 2, 1);
+  GraphAddEdge(dig01, 2, 3);
+  GraphAddEdge(dig01, 2, 4);
+  GraphAddEdge(dig01, 2, 5);
+
+  GraphAddEdge(dig01, 3, 0);
+  GraphAddEdge(dig01, 3, 2);
+  GraphAddEdge(dig01, 3,1);
+  GraphAddEdge(dig01, 3, 4);
+    GraphAddEdge(dig01, 3, 5);
   // Displaying in DOT format
   GraphDisplayDOT(dig01);
   printf("\n");
@@ -23,7 +46,7 @@ int main(void) {
   // Bellman-Ford Algorithm
 
   // Consider each vertex as a start vertex
-  for (unsigned int i = 0; i < 6; i++) {
+  for (unsigned int i = 0; i < 1; i++) {
     GraphBellmanFordAlg* BF_result = GraphBellmanFordAlgExecute(dig01, i);
 
     printf("The shortest path tree rooted at %u\n", i);
@@ -32,6 +55,8 @@ int main(void) {
 
     GraphBellmanFordAlgDestroy(&BF_result);
   }
+
+  return 0;
 
   // What kind of graph is g01?
   Graph* g01 = GraphCreate(6, 0, 0);

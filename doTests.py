@@ -4,9 +4,31 @@ import sys
 import subprocess
 dir = "grafos"
 outdir = "out"
-NUMTESTS = 3
+NUMTESTS = 16
 MINVERTICES = 4
 
+def genereate_grafo_do_ze(n):
+    assert n >= 4
+
+    # criar grafo sem arrestas
+    G = nx.erdos_renyi_graph(n, 0, directed=True)
+
+    # adicionar arrestas inicias
+    G.add_edge(0,1)
+    G.add_edge(0,2)
+    used = set()
+    for i in range(2,n):
+        list = [j for j in range(0,i+2)]
+
+        for v in range(i-1,i+1):
+            if v in used:continue
+            used.add(v)
+            for item in list:
+                if item != v and item<n:
+                    G.add_edge(v,item)
+
+
+    return G
 
 def generate_random_graph(n, case, is_directed=False):
     """Gera um grafo aleatório com n vértices e arestas direcionais ou não,
@@ -27,11 +49,8 @@ def generate_random_graph(n, case, is_directed=False):
     else:
         G = nx.erdos_renyi_graph(n, p)
 
-    # bellman pior caso
-    v = 0
-    w = n-1
-    if G.has_edge(w, v):
-            G.remove_edge( w,v)
+    if G.has_edge(0,n-1):
+        G.remove_edge(0,n-1)
 
     # Garantir que o último vértice (n-1) não tenha caminho para o vértice inicial (0)
     #inds = [i for i in range(n)]
@@ -108,16 +127,20 @@ def main():
 
     if op == 1:
         # bellman test
-        for case in [-1,0,1]:
-            for i in range(MINVERTICES,MINVERTICES+NUMTESTS):
+        for case in [-1]:
+            for i in range(MINVERTICES,NUMTESTS+MINVERTICES):
                 generate_and_save_graphs(i,n,1,case)
+                #G = genereate_grafo_do_ze(i)
+                #save_graph_to_txt(G,dir+"/grafo_do_ze.txt")
                 call_func(1,f"bellman_{["worst","average","best"][case+1]}_{i}")
 
     else:
         # transitive closure test
         for case in [-1]:
             for i in range(MINVERTICES,NUMTESTS+MINVERTICES):
-                generate_and_save_graphs(i,n,1,case)
+                #generate_and_save_graphs(i,n,1,case)
+                G = genereate_grafo_do_ze(i)
+                save_graph_to_txt(G,dir+"/grafo_do_ze.txt")
                 call_func(0,f"tClosure_{["worst","average","best"][case+1]}_{i}")
 
 if __name__ == "__main__":

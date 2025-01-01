@@ -6,10 +6,10 @@
 // GraphBellmanFord - Bellman-Ford Algorithm
 //
 
-// Student Name :
-// Student Number :
-// Student Name :
-// Student Number :
+// Student Name : José Bagagem
+// Student Number : 120141
+// Student Name : Thiago Vicente
+// Student Number : 121497
 
 // -----DONE-----
 /*** COMPLETE THE GraphBellmanFordAlgExecute FUNCTION ***/
@@ -88,7 +88,7 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
           DISTANCE_ACCESS++;
           if (g->distance[adjacentVertex]!=INT_MAX) continue;
           // update variables
-          //The distance is the iteration of this loop
+          //The distance is the iteration of this while loop
           g->distance[adjacentVertex] = iter+1;
           DISTANCE_ASSIGNMENT++;
           g->predecessor[adjacentVertex] = vertex_i;
@@ -104,9 +104,11 @@ static void _helperBellmanFord(GraphBellmanFordAlg* g, unsigned int start, unsig
 
         free(next);
       }
-      // decrement iter
+      // increment iter
       iter++;
     }
+
+    //printf("%d\n",iter);
 }
 
 GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
@@ -149,14 +151,6 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
     result->distance[i] = INT_MAX;
     DISTANCE_ASSIGNMENT++;
   }
-
-  // check if there are any edjes
-  //if (GraphGetNumEdges(g) == 0){
-  //  result->marked[startVertex] = 1;
-  //  result->distance[startVertex] = 0;
-
-  //  return result;
-  //}
 
   // THE ALGORITHM TO BUILD THE SHORTEST-PATHS TREE
   _helperBellmanFord(result,startVertex,numVertices);

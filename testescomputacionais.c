@@ -84,8 +84,6 @@ static void _testFunction(char* dirName, char* outputFile, int op, char* delimit
         }
 
         InstrReset();
-        printf("%lu%s%lu%s%lu%s%lu%s%lu\n",
-                    MARK_ACCESS,delimiter, MARK_ASSIGNMENT,delimiter, PREDECESSOR_ASSIGNMENT,delimiter,DISTANCE_ACCESS,delimiter, DISTANCE_ASSIGNMENT);
 
         // Form the full path for the graph file
         char graphFile[256];
@@ -97,8 +95,8 @@ static void _testFunction(char* dirName, char* outputFile, int op, char* delimit
         // save a label with the info about the graph
         char label[512];
         snprintf(label, sizeof(label), "graph-> vertices: %d  edjes: %d directed: %d\nMARK_ACCESS%sMARK_ASSIGNMENT\
-%sPREDECESSOR_ASSIGNMENT%sDISTANCE_ACCESS%sDISTANCE_ASSIGNMENT\n\
-",GraphGetNumVertices(g),GraphGetNumEdges(g),GraphIsDigraph(g),delimiter,delimiter,delimiter,delimiter);
+%sPREDECESSOR_ASSIGNMENT%sDISTANCE_ACCESS%sDISTANCE_ASSIGNMENT%sSUM\n\
+",GraphGetNumVertices(g),GraphGetNumEdges(g),GraphIsDigraph(g),delimiter,delimiter,delimiter,delimiter,delimiter);
         _saveResults(outputFile, label);
 
         char result[128];
@@ -112,8 +110,9 @@ static void _testFunction(char* dirName, char* outputFile, int op, char* delimit
 
                 // Save Bellman-Ford results
                 GraphBellmanFordAlgExecute(g, vStart);
-                snprintf(result, sizeof(result), "%lu%s%lu%s%lu%s%lu%s%lu\n",
-                            MARK_ACCESS,delimiter, MARK_ASSIGNMENT,delimiter, PREDECESSOR_ASSIGNMENT,delimiter,DISTANCE_ACCESS,delimiter, DISTANCE_ASSIGNMENT);
+                snprintf(result, sizeof(result), "%lu%s%lu%s%lu%s%lu%s%lu%s%lu\n",
+                            MARK_ACCESS,delimiter, MARK_ASSIGNMENT,delimiter, PREDECESSOR_ASSIGNMENT,delimiter,DISTANCE_ACCESS,delimiter, DISTANCE_ASSIGNMENT,delimiter,
+                            MARK_ACCESS+MARK_ASSIGNMENT+PREDECESSOR_ASSIGNMENT+DISTANCE_ACCESS+DISTANCE_ASSIGNMENT);
                 _saveResults(outputFile, result);
             }
             _saveResults(outputFile, "\n");
@@ -123,8 +122,9 @@ static void _testFunction(char* dirName, char* outputFile, int op, char* delimit
 
             // Save Bellman-Ford results
             GraphComputeTransitiveClosure(g);
-            snprintf(result, sizeof(result), "%lu%s%lu%s%lu%s%lu%s%lu\n",
-                        MARK_ACCESS,delimiter, MARK_ASSIGNMENT,delimiter, PREDECESSOR_ASSIGNMENT,delimiter,DISTANCE_ACCESS,delimiter, DISTANCE_ASSIGNMENT);
+            snprintf(result, sizeof(result), "%lu%s%lu%s%lu%s%lu%s%lu%s%lu\n",
+                        MARK_ACCESS,delimiter, MARK_ASSIGNMENT,delimiter, PREDECESSOR_ASSIGNMENT,delimiter,DISTANCE_ACCESS,delimiter, DISTANCE_ASSIGNMENT,delimiter,
+                        MARK_ACCESS+MARK_ASSIGNMENT+PREDECESSOR_ASSIGNMENT+DISTANCE_ACCESS+DISTANCE_ASSIGNMENT);
             _saveResults(outputFile, result);
             _saveResults(outputFile, "\n");
         }
