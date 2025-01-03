@@ -80,7 +80,6 @@ GraphEccentricityMeasures* GraphEccentricityMeasuresCompute(Graph* g) {
     int eccent = -1;
     for (unsigned int j = 0; j<numVertices; j++){
       //Compares the distance with every other vertix and stores the maximum value
-      if (i==j) continue;
       int distance=GraphGetDistanceVW(pairsDistances, i, j);
       if (distance>eccent){
         eccent=distance;
