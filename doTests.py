@@ -2,9 +2,10 @@ import networkx as nx
 import random
 import sys
 import subprocess
+import os
 dir = "grafos"
 outdir = "out"
-NUMTESTS = 16
+NUMTESTS = 500
 MINVERTICES = 4
 
 def genereate_grafo_do_ze(n):
@@ -49,20 +50,28 @@ def generate_random_graph(n, case, is_directed=False):
     else:
         G = nx.erdos_renyi_graph(n, p)
 
-    if G.has_edge(0,n-1):
-        G.remove_edge(0,n-1)
 
     # Garantir que o último vértice (n-1) não tenha caminho para o vértice inicial (0)
-    #inds = [i for i in range(n)]
-    #if is_directed:
-    #    for i in range(0,n):
-        #        v = inds[i-1]
-        #        w = inds[i]
-        #        if G.has_edge(w, v):
-            #                G.remove_edge( w,v)
+    inds = [i for i in range(n)]
+    if is_directed:
+        for i in range(0,n):
+                v = inds[i-1]
+                w = inds[i]
+                if G.has_edge(w, v):
+                            G.remove_edge( w,v)
 
 
     return G
+
+def clear_directory(directory_path):
+    # Loop through all items in the directory
+    for filename in os.listdir(directory_path):
+        file_path = os.path.join(directory_path, filename)
+
+        # Check if it's a file or directory and remove it accordingly
+        if not os.path.isdir(file_path):
+
+            os.remove(file_path)  # Remove file
 
 
 
@@ -108,6 +117,7 @@ def call_func(op,name):
 
         # Executar o programa com os argumentos fornecidos
         result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
         #print(result)
 
     except FileNotFoundError:
@@ -136,12 +146,21 @@ def main():
 
     else:
         # transitive closure test
-        for case in [-1,1]:
+        for case in [-1,0,1]:
+            file = f"{["worst","average","best"][case+1]}"
+            clear_directory(dir)
             for i in range(MINVERTICES,NUMTESTS+MINVERTICES):
-                generate_and_save_graphs(i,n,1,case)
+                a = n
+                if abs(case) == 1: a = 1
+                generate_and_save_graphs(i,a,1,case)
                 #G = genereate_grafo_do_ze(i)
                 #save_graph_to_txt(G,dir+"/grafo_do_ze.txt")
-                call_func(0,f"tClosure_{["worst","average","best"][case+1]}_{i}")
+                #call_func(0,f"tClosure_{["worst","average","best"][case+1]}_{i}")
+                call_func(0,file)
+                with open(outdir+"/"+file,"at")as fout:
+                    fout.write("\n")
+
+
 
 if __name__ == "__main__":
     main()

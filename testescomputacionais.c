@@ -98,7 +98,7 @@ static void _testFunction(char* dirName, char* outputFile, int op, char* delimit
         snprintf(label, sizeof(label), "graph-> vertices: %d  edges: %d directed: %d\nMARK_ACCESS%sMARK_ASSIGNMENT\
 %sPREDECESSOR_ASSIGNMENT%sDISTANCE_ACCESS%sDISTANCE_ASSIGNMENT%sSUM\n\
 ",GraphGetNumVertices(g),GraphGetNumEdges(g),GraphIsDigraph(g),delimiter,delimiter,delimiter,delimiter,delimiter);
-        _saveResults(outputFile, label);
+        //_saveResults(outputFile, label);
 
         char result[128];
         if (op == 1) {
@@ -131,11 +131,14 @@ static void _testFunction(char* dirName, char* outputFile, int op, char* delimit
 
                 // Calcular o tempo de execução
             cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-            snprintf(result, sizeof(result), "%lu%s%lu%s%lu%s%lu%s%lu%s%lu%s%f\n",
-                        MARK_ACCESS,delimiter, MARK_ASSIGNMENT,delimiter, PREDECESSOR_ASSIGNMENT,delimiter,DISTANCE_ACCESS,delimiter, DISTANCE_ASSIGNMENT,delimiter,
-                        MARK_ACCESS+MARK_ASSIGNMENT+PREDECESSOR_ASSIGNMENT+DISTANCE_ACCESS+DISTANCE_ASSIGNMENT,delimiter,cpu_time_used);
+            //snprintf(result, sizeof(result), "%lu%s%lu%s%lu%s%lu%s%lu%s%lu%s%f\n",
+            //            MARK_ACCESS,delimiter, MARK_ASSIGNMENT,delimiter, PREDECESSOR_ASSIGNMENT,delimiter,DISTANCE_ACCESS,delimiter, DISTANCE_ASSIGNMENT,delimiter,
+            //          MARK_ACCESS+MARK_ASSIGNMENT+PREDECESSOR_ASSIGNMENT+DISTANCE_ACCESS+DISTANCE_ASSIGNMENT,delimiter,cpu_time_used);
+            snprintf(result, sizeof(result), "%lu ",
+                        MARK_ACCESS+ MARK_ASSIGNMENT+ PREDECESSOR_ASSIGNMENT+DISTANCE_ACCESS+ DISTANCE_ASSIGNMENT);
+
             _saveResults(outputFile, result);
-            _saveResults(outputFile, "\n");
+            //_saveResults(outputFile, "\n");
         }
 
     }
