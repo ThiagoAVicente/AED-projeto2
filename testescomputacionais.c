@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <dirent.h>
+#include <time.h>
 
 #include "Graph.h"
 #include "GraphTransitiveClosure.h"
@@ -25,8 +26,8 @@ static Graph* _fileToGraph(const char* fileName){
     // is digraph? 1:0
     // is Weighted? 1:0
     // num verticies
-    // num edjes
-    // edjes ...
+    // num edges
+    // edges ...
 
     // open file
     FILE* file = fopen(fileName, "r");
@@ -94,7 +95,7 @@ static void _testFunction(char* dirName, char* outputFile, int op, char* delimit
 
         // save a label with the info about the graph
         char label[512];
-        snprintf(label, sizeof(label), "graph-> vertices: %d  edjes: %d directed: %d\nMARK_ACCESS%sMARK_ASSIGNMENT\
+        snprintf(label, sizeof(label), "graph-> vertices: %d  edges: %d directed: %d\nMARK_ACCESS%sMARK_ASSIGNMENT\
 %sPREDECESSOR_ASSIGNMENT%sDISTANCE_ACCESS%sDISTANCE_ASSIGNMENT%sSUM\n\
 ",GraphGetNumVertices(g),GraphGetNumEdges(g),GraphIsDigraph(g),delimiter,delimiter,delimiter,delimiter,delimiter);
         _saveResults(outputFile, label);
@@ -120,11 +121,19 @@ static void _testFunction(char* dirName, char* outputFile, int op, char* delimit
             // Run Transitive Closure Algorithm
             printf("Running Transitive Closure on graph: %s\n", graphFile);
 
+            clock_t start, end;
+            double cpu_time_used;
+
+            start = clock();
             // Save Bellman-Ford results
             GraphComputeTransitiveClosure(g);
-            snprintf(result, sizeof(result), "%lu%s%lu%s%lu%s%lu%s%lu%s%lu\n",
+            end = clock();
+
+                // Calcular o tempo de execução
+            cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+            snprintf(result, sizeof(result), "%lu%s%lu%s%lu%s%lu%s%lu%s%lu%s%f\n",
                         MARK_ACCESS,delimiter, MARK_ASSIGNMENT,delimiter, PREDECESSOR_ASSIGNMENT,delimiter,DISTANCE_ACCESS,delimiter, DISTANCE_ASSIGNMENT,delimiter,
-                        MARK_ACCESS+MARK_ASSIGNMENT+PREDECESSOR_ASSIGNMENT+DISTANCE_ACCESS+DISTANCE_ASSIGNMENT);
+                        MARK_ACCESS+MARK_ASSIGNMENT+PREDECESSOR_ASSIGNMENT+DISTANCE_ACCESS+DISTANCE_ASSIGNMENT,delimiter,cpu_time_used);
             _saveResults(outputFile, result);
             _saveResults(outputFile, "\n");
         }

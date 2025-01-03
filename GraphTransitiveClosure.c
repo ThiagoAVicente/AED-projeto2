@@ -41,7 +41,7 @@ Graph* GraphComputeTransitiveClosure(Graph* g) {
     // create response graph
     Graph* response = GraphCreate(numVertices, 1, 0);
 
-    // return if there is no edjes
+    // return if there is no edges
     //if ( GraphGetNumEdges(g) == 0) return response;
 
     // iterate over each vertex

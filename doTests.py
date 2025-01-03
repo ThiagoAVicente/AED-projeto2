@@ -136,11 +136,11 @@ def main():
 
     else:
         # transitive closure test
-        for case in [-1]:
+        for case in [-1,1]:
             for i in range(MINVERTICES,NUMTESTS+MINVERTICES):
-                #generate_and_save_graphs(i,n,1,case)
-                G = genereate_grafo_do_ze(i)
-                save_graph_to_txt(G,dir+"/grafo_do_ze.txt")
+                generate_and_save_graphs(i,n,1,case)
+                #G = genereate_grafo_do_ze(i)
+                #save_graph_to_txt(G,dir+"/grafo_do_ze.txt")
                 call_func(0,f"tClosure_{["worst","average","best"][case+1]}_{i}")
 
 if __name__ == "__main__":
